@@ -1,0 +1,205 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+  color: #1a1a1a;
+}
+
+/* Center Container */
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Main Card */
+.card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+  transition: all 0.3s ease;
+}
+
+.card.large {
+  max-width: 700px;
+}
+
+/* Heading */
+h2 {
+  margin-bottom: 25px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* Form Layout */
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+/* Selects */
+select {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  font-size: 14px;
+  transition: 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  color: #1a1a1a;
+}
+
+input:focus,
+select:focus {
+  border-color: #000;
+  background: #fff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #000;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #222;
+  transform: translateY(-2px);
+}
+
+/* Result Card */
+.card-box {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  padding: 25px;
+  border-radius: 15px;
+  margin-top: 20px;
+  color: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-box h3 {
+  font-size: 18px;
+}
+
+.card-box p {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== RESPONSIVE BREAKPOINTS ========== */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .card {
+    padding: 30px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .card {
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  input {
+    font-size: 16px; /* prevents zoom on iOS */
+  }
+
+  button {
+    font-size: 14px;
+  }
+}
+
+/* Vehicle Number always uppercase */
+input[name="vehicleNo"] {
+  text-transform: uppercase;
+}
+
+/* Vehicle Name always capital case */
+input[name="vehicleName"] {
+  text-transform: capitalize;
+}
+
+/* Customer Name always capital case */
+input[name="customerName"] {
+  text-transform: capitalize;
+}
+
+/* Company always capital case */
+input[name="company"] {
+  text-transform: capitalize;
+}
+
+/* Broker always capital case */
+input[name="broker"] {
+  text-transform: capitalize;
+}
