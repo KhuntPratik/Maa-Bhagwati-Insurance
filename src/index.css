@@ -3,7 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color: #1a1a1a;
+  color: #000;
   background-color: #f8f8f8;
 
   font-synthesis: none;
@@ -14,11 +14,11 @@
 
 a {
   font-weight: 500;
-  color: #009cde;
+  color: #000;
   text-decoration: inherit;
 }
 a:hover {
-  color: #0077aa;
+  color: #333;
 }
 
 body {

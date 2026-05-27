@@ -5,11 +5,17 @@ import "../pages/Navbar.css";
 function Navbar() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(
     localStorage.getItem("isAuthorized") === "true"
   );
 
   useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+
     const handleStorage = (e) => {
       if (e.key === "isAuthorized") {
         setIsAuthorized(e.newValue === "true");
@@ -21,7 +27,9 @@ function Navbar() {
 
     window.addEventListener("storage", handleStorage);
     window.addEventListener("authChange", handleAuthChange);
+    
     return () => {
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("storage", handleStorage);
       window.removeEventListener("authChange", handleAuthChange);
     };
@@ -30,13 +38,12 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("isAuthorized");
     setIsAuthorized(false);
-    // notify other components in the same window
     window.dispatchEvent(new Event("authChange"));
     navigate("/");
+    setMenuOpen(false);
   };
 
-  const handleLogin = () => {
-    navigate("/");
+  const handleNavClick = () => {
     setMenuOpen(false);
   };
 
@@ -45,36 +52,56 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar">
-      <div className="logo">
-        <Link to="/" className="logo-link">
-          Maa Bhagwati Insurance
-        </Link>
-      </div>
+    <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
+      <div className="nav-container">
+        <div className="logo">
+          <Link to="/" className="logo-link" onClick={handleNavClick}>
+            <span className="logo-icon">🛡️</span>
+            Maa Bhagwati Insurance
+          </Link>
+        </div>
 
-      <div className="menu-toggle" onClick={toggleMenu}>
-        ☰
-      </div>
+        <div className="menu-toggle" onClick={toggleMenu}>
+          ☰
+        </div>
 
-      <div className={`nav-links ${menuOpen ? "active" : ""}`}>
-        <Link to="/" onClick={() => setMenuOpen(false)}>
-          Home
-        </Link>
-        <Link to="/dashboard" onClick={() => setMenuOpen(false)}>
-          Dashboard
-        </Link>
-        <Link to="/policies" onClick={() => setMenuOpen(false)}>
-          Policies
-        </Link>
-        {isAuthorized ? (
-          <button className="logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
-        ) : (
-          <button className="logout-btn" onClick={handleLogin}>
-            Login
-          </button>
-        )}
+        <div className={`nav-links ${menuOpen ? "active" : ""}`}>
+          <Link to="/" onClick={handleNavClick}>
+            Home
+          </Link>
+          <Link to="/home" onClick={handleNavClick}>
+            Quote
+          </Link>
+          <Link to="/policies" onClick={handleNavClick}>
+            Policies
+          </Link>
+          {isAuthorized && (
+            <Link to="/dashboard" onClick={handleNavClick}>
+              Dashboard
+            </Link>
+          )}
+          {isAuthorized ? (
+            <button className="nav-btn logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          ) : (
+            <button className="nav-btn login-btn" onClick={() => {
+              navigate("/home");
+              setMenuOpen(false);
+            }}>
+              Login
+            </button>
+          )}
+        </div>
+
+        <a 
+          href="https://api.whatsapp.com/send?phone=918780777688"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="nav-whatsapp"
+        >
+          WhatsApp
+        </a>
       </div>
     </nav>
   );

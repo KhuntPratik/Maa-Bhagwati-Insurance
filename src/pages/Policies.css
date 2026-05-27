@@ -3,6 +3,7 @@
   padding: 40px;
   max-width: 1200px;
   margin: 0 auto;
+  margin-top: 60px;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -12,7 +13,7 @@
   margin-bottom: 20px;
   font-size: 28px;
   font-weight: 600;
-  color: #333;
+  color: #000;
 }
 
 .search-input {
@@ -27,9 +28,9 @@
 }
 
 .search-input:focus {
-  border-color: #667eea;
+  border-color: #000;
   outline: none;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .table-responsive {
@@ -49,6 +50,7 @@
   padding: 12px 16px;
   border-bottom: 1px solid #eee;
   text-align: center;
+  color: #000;
 }
 
 /* keep header visible on scroll */
@@ -56,6 +58,8 @@
   position: sticky;
   top: 0;
   z-index: 2;
+  color: #000;
+  font-weight: 600;
 }
 
 .policies-table tbody tr:nth-child(even) {
@@ -63,7 +67,7 @@
 }
 
 .policies-table tbody tr:hover {
-  background: #f0f0ff;
+  background: #f0f0f0;
 }
 
 /* Action Buttons */
@@ -86,14 +90,15 @@
 }
 
 .btn-edit {
-  background: #667eea;
+  background: #000;
   color: white;
 }
 
 .btn-edit:hover {
-  background: #5a67d8;
+  background: #333;
+  color: white;
   transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-delete {
@@ -110,6 +115,7 @@
 @media (max-width: 768px) {
   .policies-container {
     padding: 20px;
+    margin-top: 60px;
   }
 
   .search-input {
@@ -131,6 +137,7 @@
 @media (max-width: 480px) {
   .policies-container {
     padding: 12px;
+    margin-top: 60px;
   }
 
   .search-input {
@@ -157,4 +164,13 @@
   .table-responsive {
     overflow-x: auto;
   }
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #000000;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  font-size: 0.95rem;
 }

@@ -1,122 +1,272 @@
-/* Navbar */
+/* ===== CSS Variables ===== */
+:root {
+  --dark-navy: #ffffff;
+  --royal-blue: #ffffff;
+  --gold: #333333;
+  --white: #ffffff;
+  --text-dark: #1e293b;
+  --text-light: #64748b;
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Navbar ===== */
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #e0e0e0;
+  padding: 15px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(20px);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 40px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  color: white;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  position: relative;
+  padding: 0 20px;
 }
 
-/* Logo */
+/* ===== Logo ===== */
 .logo {
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 1.3rem;
+  font-weight: 700;
   letter-spacing: 0.5px;
 }
 
-/* ensure logo link has no underline */
 .logo-link {
   text-decoration: none;
-  color: inherit;
+  display: flex;
+  align-items: center;
+  color: #000;
+  transition: all 0.3s ease;
 }
 
-/* Nav Links */
+.logo-link:hover {
+  transform: scale(1.05);
+  color: #333
+  transform: scale(1.05);
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+  -webkit-text-fill-color: unset;
+  background: none;
+}
+
+/* ===== Nav Links ===== */
 .nav-links {
   display: flex;
-  gap: 25px;
+  gap: 30px;
   align-items: center;
-  transition: 0.3s ease;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: white;
+  color: var(--white);
   font-weight: 500;
+  transit#000;
+  font-weight: 500;
+  transition: all 0.3s ease;
   position: relative;
-  transition: 0.3s;
+  font-size: 0.95rem;
 }
 
-/* Underline hover effect */
+.nav-links a:hover {
+  color: #333
 .nav-links a::after {
   content: "";
   position: absolute;
-  width: 0%;
-  height: 2px;
-  background: white;
+  bottom: -5px;
   left: 0;
-  bottom: -4px;
-  transition: 0.3s;
+  width: 0;
+  height: 2px;
+  background: #333;
+  transition: width 0.3s ease;
 }
 
 .nav-links a:hover::after {
   width: 100%;
 }
 
-/* Logout Button */
-.logout-btn {
-  background: white;
-  color: #764ba2;
+/* ===== Nav Buttons ===== */
+.nav-btn {
+  padding: 10px 20px;
   border: none;
-  padding: 8px 15px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.login-btn {
+  background: #000;
+  color: var(--white);
+  border: 2px solid #000;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background: #333;
+  border-color: #333;
+}
+
+.logout-btn {transparent;
+  color: #000;
+  border: 2px solid #000;
 }
 
 .logout-btn:hover {
-  background: #f3f3f3;
+  background: #000;
+  color: var(--white);
   transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2
+  box-shadow: 0 5px 15px rgba(250, 204, 21, 0.3);
 }
 
-/* Hamburger Menu Icon */
+/* ===== WhatsApp Button ===== */
+.nav-whatsapp {
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid #25d366;
+  font-size: 0.9rem;
+}
+
+.nav-whatsapp:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+  background: transparent;
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ===== Hamburger Menu ===== */
 .menu-toggle {
   display: none;
-  font-size: 26px;
-  cursor: pointer;
+  font-si#000;
+  background: none;
+  border: none;
+  transition: all 0.3s ease;
 }
 
-/* ========== RESPONSIVE ========== */
+.menu-toggle:hover {
+  color: #333
+.menu-toggle:hover {
+  color: var(--gold);
+  transform: scale(1.1);
+}
 
-/* Tablet */
+/* ===== Responsive Design ===== */
 @media (max-width: 768px) {
-  .navbar {
-    padding: 15px 25px;
+  .nav-container {
+    padding: 0 15px;
   }
 
   .nav-links {
     position: absolute;
-    top: 70px;
+    top: 65px;
     right: 0;
-    background: linear-gradient(180deg, #667eea, #764ba2);
+    left: 0;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
     flex-direction: column;
-    width: 100%;
-    text-align: center;
+    gap: 0;
     padding: 20px 0;
-    gap: 20px;
     display: none;
+    border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+    box-shadow: var(--shadow-lg);
   }
 
   .nav-links.active {
     display: flex;
   }
 
+  .nav-links a,
+  .nav-btn {
+    padding: 15px 20px;
+    width: 100%;
+    text-align: center;
+    border-radius: 0;
+  }
+
+  .nav-links a::after {
+    display: none;
+  }
+
+  .nav-links a:hover {
+    background: rgba(37, 99, 235, 0.1);
+  }
+
   .menu-toggle {
     display: block;
+    order: 3;
+  }
+
+  .nav-whatsapp {
+    display: none;
+  }
+
+  .logo {
+    font-size: 1.1rem;
+  }
+
+  .logo-icon {
+    font-size: 1.3rem;
   }
 }
 
-/* Small Mobile */
 @media (max-width: 480px) {
-  .logo {
-    font-size: 18px;
+  .nav-container {
+    padding: 0 10px;
   }
 
+  .logo {
+    font-size: 0.95rem;
+  }
+
+  .logo-icon {
+    font-size: 1.1rem;
+  }
+
+  .menu-toggle {
+    font-size: 22px;
+  }
+
+  .nav-links a,
+  .nav-btn {
+    padding: 12px 15px;
+    font-size: 0.85rem;
+  }
+
+  .nav-btn {
+    margin: 10px 20px;
+    width: auto;
+  }
+
+  .login-btn,
   .logout-btn {
-    padding: 6px 12px;
-    font-size: 14px;
+    padding: 8px 16px;
+    font-size: 0.8rem;
   }
 }
