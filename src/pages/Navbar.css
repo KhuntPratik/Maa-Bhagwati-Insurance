@@ -1,263 +1,88 @@
-/* ===== CSS Variables ===== */
-:root {
-  --dark-navy: #ffffff;
-  --royal-blue: #ffffff;
-  --gold: #333333;
-  --white: #ffffff;
-  --text-dark: #1e293b;
-  --text-light: #64748b;
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* ===== Navbar ===== */
 .navbar {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #e0e0e0;
-  padding: 15px 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  z-index: 40;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.06);
 }
 
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 24px rgba(17, 17, 17, 0.06);
 }
 
 .nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  justify-content: space-between;
+  min-height: 72px;
+  gap: 16px;
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
 }
 
-/* ===== Logo ===== */
 .logo {
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .logo-link {
-  text-decoration: none;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  color: #000;
-  transition: all 0.3s ease;
-}
-
-.logo-link:hover {
-  transform: scale(1.05);
-  color: #333
-  transform: scale(1.05);
+  gap: 12px;
+  color: var(--black);
+  text-decoration: none;
+  font-weight: 700;
 }
 
 .logo-icon {
-  font-size: 1.5rem;
-  -webkit-text-fill-color: unset;
-  background: none;
+  font-size: 1.6rem;
 }
 
-/* ===== Nav Links ===== */
 .nav-links {
   display: flex;
-  gap: 30px;
   align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
 }
 
-.nav-links a {
-  text-decoration: none;
-  color: var(--white);
-  font-weight: 500;
-  transit#000;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  position: relative;
-  font-size: 0.95rem;
-}
-
-.nav-links a:hover {
-  color: #333
-.nav-links a::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: #333;
-  transition: width 0.3s ease;
-}
-
-.nav-links a:hover::after {
-  width: 100%;
-}
-
-/* ===== Nav Buttons ===== */
-.nav-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.login-btn {
-  background: #000;
-  color: var(--white);
-  border: 2px solid #000;
-}
-
-.login-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  background: #333;
-  border-color: #333;
-}
-
-.logout-btn {transparent;
-  color: #000;
-  border: 2px solid #000;
-}
-
-.logout-btn:hover {
-  background: #000;
-  color: var(--white);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2
-  box-shadow: 0 5px 15px rgba(250, 204, 21, 0.3);
-}
-
-/* ===== WhatsApp Button ===== */
-.nav-whatsapp {
-  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-  color: var(--white);
-  padding: 10px 20px;
-  border-radius: 25px;
+.nav-links a,
+.nav-links button {
+  color: var(--text);
   text-decoration: none;
   font-weight: 600;
-  transition: all 0.3s ease;
-  border: 2px solid #25d366;
-  font-size: 0.9rem;
-}
-
-.nav-whatsapp:hover {
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
   background: transparent;
-  border-color: var(--gold);
-  color: var(--gold);
+  border: 0;
+  cursor: pointer;
 }
 
-/* ===== Hamburger Menu ===== */
-.menu-toggle {
-  display: none;
-  font-si#000;
-  background: none;
-  border: none;
-  transition: all 0.3s ease;
+.nav-btn {
+  border: 1px solid var(--black);
+  background: var(--black);
+  color: var(--white);
+  padding: 0.75rem 1.1rem;
+  border-radius: 999px;
 }
 
-.menu-toggle:hover {
-  color: #333
-.menu-toggle:hover {
-  color: var(--gold);
-  transform: scale(1.1);
+.nav-whatsapp {
+  border: 1px solid #25d366;
+  background: #25d366;
+  color: var(--white);
+  border-radius: 999px;
+  padding: 0.75rem 1.2rem;
+  font-weight: 700;
 }
 
-/* ===== Responsive Design ===== */
 @media (max-width: 768px) {
-  .nav-container {
-    padding: 0 15px;
-  }
-
   .nav-links {
-    position: absolute;
-    top: 65px;
-    right: 0;
-    left: 0;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(20px);
-    flex-direction: column;
-    gap: 0;
-    padding: 20px 0;
     display: none;
-    border-bottom: 1px solid rgba(37, 99, 235, 0.1);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .nav-links.active {
-    display: flex;
-  }
-
-  .nav-links a,
-  .nav-btn {
-    padding: 15px 20px;
-    width: 100%;
-    text-align: center;
-    border-radius: 0;
-  }
-
-  .nav-links a::after {
-    display: none;
-  }
-
-  .nav-links a:hover {
-    background: rgba(37, 99, 235, 0.1);
-  }
-
-  .menu-toggle {
-    display: block;
-    order: 3;
   }
 
   .nav-whatsapp {
     display: none;
   }
-
-  .logo {
-    font-size: 1.1rem;
-  }
-
-  .logo-icon {
-    font-size: 1.3rem;
-  }
 }
-
-@media (max-width: 480px) {
-  .nav-container {
-    padding: 0 10px;
-  }
-
-  .logo {
-    font-size: 0.95rem;
-  }
-
-  .logo-icon {
-    font-size: 1.1rem;
-  }
-
-  .menu-toggle {
-    font-size: 22px;
-  }
-
-  .nav-links a,
-  .nav-btn {
-    padding: 12px 15px;
-    font-size: 0.85rem;
-  }
 
   .nav-btn {
     margin: 10px 20px;

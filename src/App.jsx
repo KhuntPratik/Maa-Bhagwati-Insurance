@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import Dashboard from "./Dashboard/Dashboard";
@@ -6,10 +6,12 @@ import Navbar from "./pages/Navbar";
 import ProtectedRoute from "./ProtectedRoute";
 import Policies from "./pages/Policies";
 
-function App() {
+function AppShell() {
+  const location = useLocation();
+
   return (
-    <BrowserRouter>
-      <Navbar />
+    <>
+      {location.pathname !== "/" && <Navbar />}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/home" element={<Home />} />
@@ -24,14 +26,22 @@ function App() {
         />
 
         <Route
-  path="/policies"
-  element={
-    <ProtectedRoute>
-      <Policies />
-    </ProtectedRoute>
-  }
-/>
+          path="/policies"
+          element={
+            <ProtectedRoute>
+              <Policies />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppShell />
     </BrowserRouter>
   );
 }

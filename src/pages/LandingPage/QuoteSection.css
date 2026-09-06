@@ -1,0 +1,40 @@
+.quote-section {
+  background:
+   
+    radial-gradient(
+      circle at bottom left,
+      rgba(17, 17, 17, 0.06),
+      transparent 25%
+    ),
+    var(--white);
+
+  padding: 50px;
+  padding: 50px;
+}
+
+.quote-layout {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.quote-copy p {
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.quote-form {
+  padding: 30px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* Tablet */
+@media (max-width: 980px) {
+  .quote-layout {
+    grid-template-columns: 1fr;
+  }
+}

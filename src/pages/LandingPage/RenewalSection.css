@@ -1,0 +1,6 @@
+.renewal-section { background: var(--bg); }
+.renewal-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 32px; align-items: start; }
+.renewal-layout p { color: var(--muted); line-height: 1.8; }
+.renewal-form { padding: 30px; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+.success-message { margin-top: 18px; background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.2); color: #166534; border-radius: 12px; padding: .9rem 1rem; font-weight: 600; }
+@media (max-width: 980px) { .renewal-layout { grid-template-columns: 1fr; } }
