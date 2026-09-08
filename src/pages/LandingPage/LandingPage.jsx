@@ -8,7 +8,6 @@ import InsuranceSection from "./InsuranceSection";
 import QuoteSection from "./QuoteSection";
 import WhyChooseUsSection from "./WhyChooseUsSection";
 import ProcessSection from "./ProcessSection";
-import TrustSection from "./TrustSection";
 import RenewalSection from "./RenewalSection";
 import ClaimSection from "./ClaimSection";
 import AboutSection from "./AboutSection";
@@ -165,8 +164,7 @@ function LandingPage() {
           steps={processSteps}
         />
 
-        {/* Trust Section */}
-        <TrustSection />
+    
 
         {/* Renewal Section */}
         <RenewalSection
