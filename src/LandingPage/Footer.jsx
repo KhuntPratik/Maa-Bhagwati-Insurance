@@ -10,7 +10,7 @@ function Footer({ siteConfig }) {
         {/* Brand Information */}
         <div>
           <img
-            src="/logo.png"
+            src="/logo1.png"
             alt="Maa Bhagwati Insurance logo"
             className="footer-logo"
           />
