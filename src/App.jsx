@@ -1,20 +1,25 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import Home from "./pages/Home";
-import LandingPage from "./pages/LandingPage/LandingPage";
-import Dashboard from "./Dashboard/Dashboard";
-import Navbar from "./pages/Navbar";
+import Home from "./admin/Home";
+import LandingPage from "./LandingPage/LandingPage";
+import Dashboard from "./admin/Dashboard";
+import AdminLogin from "./admin/AdminLogin";
+import Navbar from "./admin/Navbar";
 import ProtectedRoute from "./ProtectedRoute";
-import Policies from "./pages/Policies";
+import Policies from "./admin/Policies";
 
 function AppShell() {
   const location = useLocation();
+  const isAdminArea = ["/home", "/dashboard", "/policies"].includes(
+    location.pathname
+  );
 
   return (
     <>
-      {location.pathname !== "/" && <Navbar />}
+      {isAdminArea && <Navbar />}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/admin" element={<AdminLogin />} />
 
         <Route
           path="/dashboard"

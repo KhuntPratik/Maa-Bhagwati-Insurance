@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./LandingPage.css";
-import WhatsAppButton from "../../components/WhatsAppButton";
-import { buildWhatsAppLink, siteConfig } from "../../config/site";
+import WhatsAppButton from "../components/WhatsAppButton";
+import { buildWhatsAppLink, siteConfig } from "../config/site";
 import Header from "./Header";
 import HeroSection from "./HeroSection";
 import InsuranceSection from "./InsuranceSection";

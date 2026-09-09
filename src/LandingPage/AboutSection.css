@@ -1,0 +1,21 @@
+.about-section {
+    background: var(--bg);
+    padding: 50px;
+}
+
+.about-box {
+    display: grid;
+    grid-template-columns: .8fr 1.2fr;
+    gap: 32px;
+}
+
+.about-box p {
+    color: var(--muted);
+    line-height: 2.1;
+}
+
+@media (max-width: 980px) {
+    .about-box {
+        grid-template-columns: 1fr;
+    }
+}

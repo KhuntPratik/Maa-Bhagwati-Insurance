@@ -1,0 +1,143 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: min(1180px, calc(100% - 32px));
+  min-height: 72px;
+  margin: 0 auto;
+}
+
+.logo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #111827;
+  text-decoration: none;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.nav-links a,
+.nav-links button {
+  color: #4b5563;
+  font: inherit;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible,
+.nav-links .active-link {
+  color: #111827;
+}
+
+.nav-links .active-link {
+  position: relative;
+}
+
+.nav-links .active-link::after {
+  position: absolute;
+  right: 0;
+  bottom: -10px;
+  left: 0;
+  height: 2px;
+  background: #111827;
+  content: "";
+}
+
+.nav-btn {
+  padding: 0.7rem 1.05rem;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  background: #111827 !important;
+}
+
+.nav-btn:hover,
+.nav-btn:focus-visible {
+  background: #374151 !important;
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #111827;
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    position: relative;
+    min-height: 64px;
+  }
+
+  .menu-toggle {
+    display: flex;
+    margin-left: auto;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: calc(100% + 1px);
+    right: 0;
+    left: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px 16px 16px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links a,
+  .nav-links button {
+    padding: 12px 0;
+    text-align: left;
+  }
+
+  .nav-links .active-link::after {
+    display: none;
+  }
+
+  .nav-btn {
+    width: 100%;
+    text-align: center !important;
+  }
+}

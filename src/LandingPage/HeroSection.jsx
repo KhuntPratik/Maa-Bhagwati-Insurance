@@ -1,4 +1,4 @@
-import { buildWhatsAppLink } from "../../config/site";
+import { buildWhatsAppLink } from "../config/site";
 import "./HeroSection.css";
 
 function HeroSection({ siteConfig }) {
