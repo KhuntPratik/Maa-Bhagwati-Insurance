@@ -6,10 +6,11 @@ import AdminLogin from "./admin/AdminLogin";
 import Navbar from "./admin/Navbar";
 import ProtectedRoute from "./ProtectedRoute";
 import Policies from "./admin/Policies";
+import Renewals from "./admin/Renewals";
 
 function AppShell() {
   const location = useLocation();
-  const isAdminArea = ["/home", "/dashboard", "/policies"].includes(
+  const isAdminArea = ["/home", "/dashboard", "/policies", "/renewals"].includes(
     location.pathname
   );
 
@@ -35,6 +36,15 @@ function AppShell() {
           element={
             <ProtectedRoute>
               <Policies />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/renewals"
+          element={
+            <ProtectedRoute>
+              <Renewals />
             </ProtectedRoute>
           }
         />

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import "./Home.css";
 
@@ -13,27 +14,39 @@ const initialState = {
   company: "",
   broker: "",
   premium: "",
-  commission: ""
+  commission: "",
 };
 
 function Home() {
   const [formData, setFormData] = useState(initialState);
   const [pin, setPin] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
-
-  // check stored authorization on mount and listen for auth changes
-  useEffect(() => {
-    const checkAuth = () => {
-      setIsAuthorized(localStorage.getItem("isAuthorized") === "true");
-    };
-
-    checkAuth();
-    window.addEventListener("authChange", checkAuth);
-    return () => window.removeEventListener("authChange", checkAuth);
-  }, []);
+  const [isSaving, setIsSaving] = useState(false);
 
   const scriptURL = import.meta.env.VITE_SCRIPT_URL;
 
+  // =========================
+  // CHECK AUTHORIZATION
+  // =========================
+  useEffect(() => {
+    const checkAuth = () => {
+      setIsAuthorized(
+        localStorage.getItem("isAuthorized") === "true"
+      );
+    };
+
+    checkAuth();
+
+    window.addEventListener("authChange", checkAuth);
+
+    return () => {
+      window.removeEventListener("authChange", checkAuth);
+    };
+  }, []);
+
+  // =========================
+  // PIN
+  // =========================
   const handlePinSubmit = (e) => {
     e.preventDefault();
 
@@ -41,84 +54,171 @@ function Home() {
       localStorage.setItem("isAuthorized", "true");
       setIsAuthorized(true);
       setPin("");
-      // notify other components (Navbar) in the same window about auth change
+
       window.dispatchEvent(new Event("authChange"));
     } else {
       alert("Wrong PIN ❌");
     }
   };
 
+  // =========================
+  // NORMAL INPUT
+  // =========================
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
+  // =========================
+  // MOBILE NUMBER
+  // =========================
   const handleMobileChange = (e) => {
-    let value = e.target.value;
+    let value = e.target.value.replace(/\D/g, "");
 
-    // Remove any non-digit characters
-    value = value.replace(/\D/g, "");
-
-    // Auto add +91 if not present
-    if (value && !value.startsWith("91")) {
-      value = "91" + value;
+    // If user pastes +91XXXXXXXXXX
+    if (value.length > 10 && value.startsWith("91")) {
+      value = value.substring(2);
     }
 
-    // Limit to 12 digits (91 + 10 digit number)
-    value = value.slice(0, 12);
+    // Maximum 10 digits
+    value = value.slice(0, 10);
 
-    setFormData({ ...formData, mobile: "+" + value });
+    setFormData((prev) => ({
+      ...prev,
+      mobile: value,
+    }));
   };
 
+  // =========================
+  // VEHICLE NUMBER
+  // =========================
   const handleVehicleNoChange = (e) => {
-    const value = e.target.value.toUpperCase();
-    setFormData({ ...formData, vehicleNo: value });
+    const value = e.target.value
+      .toUpperCase()
+      .replace(/\s/g, "");
+
+    setFormData((prev) => ({
+      ...prev,
+      vehicleNo: value,
+    }));
   };
 
+  // =========================
+  // VEHICLE NAME
+  // =========================
   const handleVehicleNameChange = (e) => {
-    // Convert to capital case (First letter of each word capitalized)
     const value = e.target.value
       .toLowerCase()
       .split(" ")
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map(
+        (word) =>
+          word.charAt(0).toUpperCase() + word.slice(1)
+      )
       .join(" ");
-    setFormData({ ...formData, vehicleName: value });
+
+    setFormData((prev) => ({
+      ...prev,
+      vehicleName: value,
+    }));
   };
 
+  // =========================
+  // CUSTOMER / COMPANY / BROKER
+  // =========================
   const handleCapitalCaseChange = (e) => {
-    // Generic capital case handler for text fields
+    const { name } = e.target;
+
     const value = e.target.value
       .toLowerCase()
       .split(" ")
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map(
+        (word) =>
+          word.charAt(0).toUpperCase() + word.slice(1)
+      )
       .join(" ");
-    setFormData({ ...formData, [e.target.name]: value });
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // =========================
+  // SUBMIT
+  // =========================
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const form = new FormData();
-    for (let key in formData) {
-      form.append(key, formData[key]);
-    }
+  if (!scriptURL) {
+    alert(
+      "Google Apps Script URL is missing ❌\n\n" +
+      "Check VITE_SCRIPT_URL in .env"
+    );
+    return;
+  }
+
+  const mobile = formData.mobile.replace(/\D/g, "");
+
+  // Validate mobile
+  if (!/^[6-9]\d{9}$/.test(mobile)) {
+    alert(
+      "Please enter a valid 10-digit Indian mobile number ❌\n\n" +
+      "Example: 9876543210"
+    );
+    return;
+  }
+
+  try {
+    setIsSaving(true);
+
+    const dataToSend = {
+      ...formData,
+      mobile: `+91${mobile}`,
+    };
+    
+
+    const formBody = new URLSearchParams(dataToSend).toString();
 
     await fetch(scriptURL, {
       method: "POST",
       mode: "no-cors",
-      body: form
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+      body: formBody,
     });
 
-    alert("Data Saved ✅");
+    // no-cors response cannot be read
+    alert("Policy request sent successfully ✅");
+
     setFormData(initialState);
-  };
 
+  } catch (error) {
+    console.error("Submit Error:", error);
 
+    alert(
+      "Request could not be sent ❌\n\n" +
+      "Please check your internet connection and Apps Script URL."
+    );
 
+  } finally {
+    setIsSaving(false);
+  }
+};
+
+  // =========================
+  // PIN SCREEN
+  // =========================
   if (!isAuthorized) {
     return (
       <div className="container">
         <div className="card">
           <h2>🔐 Secure Access</h2>
+
           <form onSubmit={handlePinSubmit}>
             <input
               type="password"
@@ -127,109 +227,230 @@ function Home() {
               onChange={(e) => setPin(e.target.value)}
               required
             />
-            <button type="submit">Unlock</button>
+
+            <button type="submit">
+              Unlock
+            </button>
           </form>
         </div>
       </div>
     );
   }
 
+  // =========================
+  // FORM FIELDS
+  // =========================
   const formFields = Object.keys(formData);
+
   const fieldsPerRow = 2;
+
   const rows = [];
 
-  for (let i = 0; i < formFields.length; i += fieldsPerRow) {
-    rows.push(formFields.slice(i, i + fieldsPerRow));
+  for (
+    let i = 0;
+    i < formFields.length;
+    i += fieldsPerRow
+  ) {
+    rows.push(
+      formFields.slice(i, i + fieldsPerRow)
+    );
   }
 
+  // =========================
+  // FORM UI
+  // =========================
   return (
     <div className="container">
       <div className="card large">
+
         <h2>🚗 Insurance Entry Form</h2>
-        <form onSubmit={handleSubmit} className="form-grid">
+
+        <form
+          onSubmit={handleSubmit}
+          className="form-grid"
+        >
+
           {rows.map((row, rowIndex) => (
-            <div key={rowIndex} className="form-row">
+            <div
+              key={rowIndex}
+              className="form-row"
+            >
+
               {row.map((key) => (
-                <div key={key} className="form-col">
+                <div
+                  key={key}
+                  className="form-col"
+                >
+
+                  {/* =========================
+                      MOBILE
+                  ========================= */}
                   {key === "mobile" ? (
+                    <>
+                      <input
+                        name="mobile"
+                        value={formData.mobile}
+                        onChange={handleMobileChange}
+                        placeholder="9876543210"
+                        type="tel"
+                        inputMode="numeric"
+                        maxLength={10}
+                        pattern="[6-9][0-9]{9}"
+                        required
+                      />
+
+                      <small>
+                        {formData.mobile.length}/10 digits
+                      </small>
+                    </>
+                  )
+
+                  /* =========================
+                     VEHICLE NUMBER
+                  ========================= */
+                  : key === "vehicleNo" ? (
                     <input
-                      name={key}
-                      value={formData[key]}
-                      onChange={handleMobileChange}
-                      placeholder="+91XXXXXXXXXX"
-                      type="tel"
-                      required
-                    />
-                  ) : key === "vehicleNo" ? (
-                    <input
-                      name={key}
-                      value={formData[key]}
+                      name="vehicleNo"
+                      value={formData.vehicleNo}
                       onChange={handleVehicleNoChange}
                       placeholder="Vehicle No (Ex: GJ03CF1234)"
                       type="text"
                       required
                     />
-                  ) : key === "vehicleName" ? (
+                  )
+
+                  /* =========================
+                     VEHICLE NAME
+                  ========================= */
+                  : key === "vehicleName" ? (
                     <input
-                      name={key}
-                      value={formData[key]}
+                      name="vehicleName"
+                      value={formData.vehicleName}
                       onChange={handleVehicleNameChange}
                       placeholder="Vehicle Name (Ex: Honda City)"
                       type="text"
                       required
                     />
-                  ) : key === "insuranceType" ? (
+                  )
+
+                  /* =========================
+                     INSURANCE TYPE
+                  ========================= */
+                  : key === "insuranceType" ? (
                     <select
-                      name={key}
-                      value={formData[key]}
-                      onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
+                      name="insuranceType"
+                      value={formData.insuranceType}
+                      onChange={handleChange}
                       required
                     >
-                      <option value="">Select Insurance Type</option>
-                      <option value="Third Party">Third Party</option>
-                      <option value="Comprehensive">Comprehensive</option>
+                      <option value="">
+                        Select Insurance Type
+                      </option>
+
+                      <option value="Third Party">
+                        Third Party
+                      </option>
+
+                      <option value="Comprehensive">
+                        Comprehensive
+                      </option>
                     </select>
-                  ) : key === "vehicleType" ? (
+                  )
+
+                  /* =========================
+                     VEHICLE TYPE
+                  ========================= */
+                  : key === "vehicleType" ? (
                     <select
-                      name={key}
-                      value={formData[key]}
-                      onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
+                      name="vehicleType"
+                      value={formData.vehicleType}
+                      onChange={handleChange}
                       required
                     >
-                      <option value="">Select Vehicle Type</option>
-                      <option value="Car">Car</option>
-                      <option value="Two Wheeler">Two Wheeler</option>
-                      <option value="Commercial">Commercial</option>
+                      <option value="">
+                        Select Vehicle Type
+                      </option>
+
+                      <option value="Car">
+                        Car
+                      </option>
+
+                      <option value="Two Wheeler">
+                        Two Wheeler
+                      </option>
+
+                      <option value="Commercial">
+                        Commercial
+                      </option>
                     </select>
-                  ) : key === "customerName" || key === "company" || key === "broker" ? (
+                  )
+
+                  /* =========================
+                     CUSTOMER / COMPANY / BROKER
+                  ========================= */
+                  : key === "customerName" ||
+                    key === "company" ||
+                    key === "broker" ? (
                     <input
                       name={key}
                       value={formData[key]}
                       onChange={handleCapitalCaseChange}
-                      placeholder={key.replace(/([A-Z])/g, " $1")}
+                      placeholder={key.replace(
+                        /([A-Z])/g,
+                        " $1"
+                      )}
                       type="text"
                       required
                     />
-                  ) : (
+                  )
+
+                  /* =========================
+                     PREMIUM / COMMISSION
+                  ========================= */
+                  : (
                     <input
                       name={key}
                       value={formData[key]}
                       onChange={handleChange}
-                      placeholder={key.replace(/([A-Z])/g, " $1")}
-                      type={key === "premium" || key === "commission" ? "number" : "text"}
+                      placeholder={key.replace(
+                        /([A-Z])/g,
+                        " $1"
+                      )}
+                      type={
+                        key === "premium" ||
+                        key === "commission"
+                          ? "number"
+                          : "text"
+                      }
                       required
                     />
                   )}
+
                 </div>
               ))}
+
             </div>
           ))}
+
+          {/* =========================
+              SUBMIT BUTTON
+          ========================= */}
           <div className="form-row form-row-full">
-            <button type="submit" className="submit-btn">
-              Save Data
+
+            <button
+              type="submit"
+              className="submit-btn"
+              disabled={isSaving}
+            >
+              {isSaving
+                ? "Saving..."
+                : "Save Data"}
             </button>
+
           </div>
+
         </form>
+
       </div>
     </div>
   );

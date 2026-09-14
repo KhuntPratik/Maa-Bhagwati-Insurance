@@ -79,6 +79,13 @@ function Navbar() {
           >
             Policies
           </Link>
+          <Link
+            className={isActive("/renewals") ? "active-link" : ""}
+            to="/renewals"
+            onClick={handleNavClick}
+          >
+            Renewals
+          </Link>
           <Link to="/" onClick={handleNavClick}>
             View Website
           </Link>

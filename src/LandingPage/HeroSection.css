@@ -145,6 +145,10 @@
   font-size: 0.8rem;
 }
 
+.secondary-button:hover {
+  color: white;
+}
+
 /* Tablet */
 @media (max-width: 980px) {
   .hero-content {

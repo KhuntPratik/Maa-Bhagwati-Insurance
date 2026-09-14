@@ -112,11 +112,25 @@ function LandingPage() {
     setQuoteForm(initialQuoteState);
   };
 
-  const handleRenewalSubmit = (event) => {
+  const handleRenewalSubmit = async (event) => {
     event.preventDefault();
     const errors = validateRenewal();
     setRenewalErrors(errors);
     if (Object.keys(errors).length) return;
+
+    const renewalScriptURL = import.meta.env.VITE_RENEWAL_SCRIPT_URL;
+    if (renewalScriptURL) {
+      const form = new FormData();
+      Object.entries(renewalForm).forEach(([key, value]) => {
+        form.append(key, value);
+      });
+      await fetch(renewalScriptURL, {
+        method: "POST",
+        mode: "no-cors",
+        body: form
+      });
+    }
+
     setRenewalSuccess(true);
     setRenewalForm(initialRenewalState);
   };

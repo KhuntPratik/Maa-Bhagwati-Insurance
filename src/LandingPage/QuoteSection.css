@@ -1,12 +1,5 @@
 .quote-section {
-  background:
-   
-    radial-gradient(
-      circle at bottom left,
-      rgba(17, 17, 17, 0.06),
-      transparent 25%
-    ),
-    var(--white);
+  background: var(--bg);
 
   padding: 50px;
   padding: 50px;

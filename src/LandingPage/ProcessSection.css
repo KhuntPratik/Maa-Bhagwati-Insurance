@@ -11,7 +11,7 @@
 .process-card {
     height: 100%;
     padding: 28px 22px;
-    background: var(--white);
+     background: var(--bg);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
