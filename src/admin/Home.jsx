@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import "./Home.css";
 
@@ -15,6 +14,8 @@ const initialState = {
   broker: "",
   premium: "",
   commission: "",
+  paid: false,
+  paidAmount: "",
 };
 
 function Home() {
@@ -150,65 +151,79 @@ function Home() {
   // =========================
   // SUBMIT
   // =========================
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!scriptURL) {
-    alert(
-      "Google Apps Script URL is missing ❌\n\n" +
-      "Check VITE_SCRIPT_URL in .env"
-    );
-    return;
-  }
+    if (!scriptURL) {
+      alert(
+        "Google Apps Script URL is missing ❌\n\n" +
+        "Check VITE_SCRIPT_URL in .env"
+      );
+      return;
+    }
 
-  const mobile = formData.mobile.replace(/\D/g, "");
+    const mobile = formData.mobile.replace(/\D/g, "");
 
-  // Validate mobile
-  if (!/^[6-9]\d{9}$/.test(mobile)) {
-    alert(
-      "Please enter a valid 10-digit Indian mobile number ❌\n\n" +
-      "Example: 9876543210"
-    );
-    return;
-  }
+    // Validate mobile
+    if (!/^[6-9]\d{9}$/.test(mobile)) {
+      alert(
+        "Please enter a valid 10-digit Indian mobile number ❌\n\n" +
+        "Example: 9876543210"
+      );
+      return;
+    }
 
-  try {
-    setIsSaving(true);
+    // Validate paid amount
+    if (
+      formData.paid === false &&
+      (!formData.paidAmount ||
+        Number(formData.paidAmount) <= 0)
+    ) {
+      alert("Please enter Paid Amount when Unpaid is selected ❌");
+      return;
+    }
 
-    const dataToSend = {
-      ...formData,
-      mobile: `+91${mobile}`,
-    };
-    
+    try {
+      setIsSaving(true);
 
-    const formBody = new URLSearchParams(dataToSend).toString();
+      const dataToSend = {
+        ...formData,
+        paid: formData.paid ? "true" : "false",
+        paidAmount: formData.paidAmount,
+        mobile: `+91${mobile}`,
+      };
 
-    await fetch(scriptURL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-      },
-      body: formBody,
-    });
+      console.log("Sending data:", dataToSend);
 
-    // no-cors response cannot be read
-    alert("Policy request sent successfully ✅");
+      const formBody = new URLSearchParams(
+        dataToSend
+      ).toString();
 
-    setFormData(initialState);
+      await fetch(scriptURL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type":
+            "application/x-www-form-urlencoded;charset=UTF-8",
+        },
+        body: formBody,
+      });
 
-  } catch (error) {
-    console.error("Submit Error:", error);
+      // no-cors response cannot be read
+      alert("Policy request sent successfully ✅");
 
-    alert(
-      "Request could not be sent ❌\n\n" +
-      "Please check your internet connection and Apps Script URL."
-    );
+      setFormData(initialState);
+    } catch (error) {
+      console.error("Submit Error:", error);
 
-  } finally {
-    setIsSaving(false);
-  }
-};
+      alert(
+        "Request could not be sent ❌\n\n" +
+        "Please check your internet connection and Apps Script URL."
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   // =========================
   // PIN SCREEN
@@ -283,7 +298,7 @@ const handleSubmit = async (e) => {
                 >
 
                   {/* =========================
-                      MOBILE
+                     MOBILE
                   ========================= */}
                   {key === "mobile" ? (
                     <>
@@ -305,126 +320,206 @@ const handleSubmit = async (e) => {
                     </>
                   )
 
-                  /* =========================
-                     VEHICLE NUMBER
-                  ========================= */
-                  : key === "vehicleNo" ? (
-                    <input
-                      name="vehicleNo"
-                      value={formData.vehicleNo}
-                      onChange={handleVehicleNoChange}
-                      placeholder="Vehicle No (Ex: GJ03CF1234)"
-                      type="text"
-                      required
-                    />
-                  )
+                    /* =========================
+                       VEHICLE NUMBER
+                    ========================= */
+                    : key === "vehicleNo" ? (
+                      <input
+                        name="vehicleNo"
+                        value={formData.vehicleNo}
+                        onChange={handleVehicleNoChange}
+                        placeholder="Vehicle No (Ex: GJ03CF1234)"
+                        type="text"
+                        required
+                      />
+                    )
 
-                  /* =========================
-                     VEHICLE NAME
-                  ========================= */
-                  : key === "vehicleName" ? (
-                    <input
-                      name="vehicleName"
-                      value={formData.vehicleName}
-                      onChange={handleVehicleNameChange}
-                      placeholder="Vehicle Name (Ex: Honda City)"
-                      type="text"
-                      required
-                    />
-                  )
+                      /* =========================
+                         VEHICLE NAME
+                      ========================= */
+                      : key === "vehicleName" ? (
+                        <input
+                          name="vehicleName"
+                          value={formData.vehicleName}
+                          onChange={handleVehicleNameChange}
+                          placeholder="Vehicle Name (Ex: Honda City)"
+                          type="text"
+                          required
+                        />
+                      )
 
-                  /* =========================
-                     INSURANCE TYPE
-                  ========================= */
-                  : key === "insuranceType" ? (
-                    <select
-                      name="insuranceType"
-                      value={formData.insuranceType}
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value="">
-                        Select Insurance Type
-                      </option>
+                        /* =========================
+                           INSURANCE TYPE
+                        ========================= */
+                        : key === "insuranceType" ? (
+                          <select
+                            name="insuranceType"
+                            value={formData.insuranceType}
+                            onChange={handleChange}
+                            required
+                          >
+                            <option value="">
+                              Select Insurance Type
+                            </option>
 
-                      <option value="Third Party">
-                        Third Party
-                      </option>
+                            <option value="Third Party">
+                              Third Party
+                            </option>
 
-                      <option value="Comprehensive">
-                        Comprehensive
-                      </option>
-                    </select>
-                  )
+                            <option value="Comprehensive">
+                              Comprehensive
+                            </option>
+                          </select>
+                        )
 
-                  /* =========================
-                     VEHICLE TYPE
-                  ========================= */
-                  : key === "vehicleType" ? (
-                    <select
-                      name="vehicleType"
-                      value={formData.vehicleType}
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value="">
-                        Select Vehicle Type
-                      </option>
+                          /* =========================
+                             VEHICLE TYPE
+                          ========================= */
+                          : key === "vehicleType" ? (
+                            <select
+                              name="vehicleType"
+                              value={formData.vehicleType}
+                              onChange={handleChange}
+                              required
+                            >
+                              <option value="">
+                                Select Vehicle Type
+                              </option>
 
-                      <option value="Car">
-                        Car
-                      </option>
+                              <option value="Car">
+                                Car
+                              </option>
 
-                      <option value="Two Wheeler">
-                        Two Wheeler
-                      </option>
+                              <option value="Two Wheeler">
+                                Two Wheeler
+                              </option>
 
-                      <option value="Commercial">
-                        Commercial
-                      </option>
-                    </select>
-                  )
+                              <option value="Commercial">
+                                Commercial
+                              </option>
+                            </select>
+                          )
 
-                  /* =========================
-                     CUSTOMER / COMPANY / BROKER
-                  ========================= */
-                  : key === "customerName" ||
-                    key === "company" ||
-                    key === "broker" ? (
-                    <input
-                      name={key}
-                      value={formData[key]}
-                      onChange={handleCapitalCaseChange}
-                      placeholder={key.replace(
-                        /([A-Z])/g,
-                        " $1"
-                      )}
-                      type="text"
-                      required
-                    />
-                  )
+                            /* =========================
+                               CUSTOMER / COMPANY / BROKER
+                            ========================= */
+                            : key === "customerName" ||
+                              key === "company" ||
+                              key === "broker" ? (
+                              <input
+                                name={key}
+                                value={formData[key]}
+                                onChange={handleCapitalCaseChange}
+                                placeholder={key.replace(
+                                  /([A-Z])/g,
+                                  " $1"
+                                )}
+                                type="text"
+                                required
+                              />
+                            )
 
-                  /* =========================
-                     PREMIUM / COMMISSION
-                  ========================= */
-                  : (
-                    <input
-                      name={key}
-                      value={formData[key]}
-                      onChange={handleChange}
-                      placeholder={key.replace(
-                        /([A-Z])/g,
-                        " $1"
-                      )}
-                      type={
-                        key === "premium" ||
-                        key === "commission"
-                          ? "number"
-                          : "text"
-                      }
-                      required
-                    />
-                  )}
+                              /* =========================
+                                 PREMIUM / COMMISSION
+                              ========================= */
+                              : key === "premium" ||
+                                key === "commission" ? (
+                                <input
+                                  name={key}
+                                  value={formData[key]}
+                                  onChange={handleChange}
+                                  placeholder={
+                                    key === "premium"
+                                      ? "Premium"
+                                      : "Commission"
+                                  }
+                                  type="number"
+                                  min="0"
+                                  required
+                                />
+                              )
+
+                                /* =========================
+                                   PAYMENT STATUS
+                                ========================= */
+                                : key === "paid" ? (
+                                  <div className="payment-field">
+
+                                    <label className="field-label">
+                                      Payment Status
+                                    </label>
+
+                                    <div className="radio-group">
+
+                                      <label className="radio-option">
+                                        <input
+                                          type="radio"
+                                          name="paid"
+                                          checked={formData.paid === true}
+                                          onChange={() =>
+                                            setFormData((prev) => ({
+                                              ...prev,
+                                              paid: true,
+                                            }))
+                                          }
+                                        />
+
+                                        <span>Paid</span>
+                                      </label>
+
+                                      <label className="radio-option">
+                                        <input
+                                          type="radio"
+                                          name="paid"
+                                          checked={formData.paid === false}
+                                          onChange={() =>
+                                            setFormData((prev) => ({
+                                              ...prev,
+                                              paid: false,
+                                              paidAmount: "",
+                                            }))
+                                          }
+                                        />
+
+                                        <span>Unpaid</span>
+                                      </label>
+
+                                    </div>
+
+                                  </div>
+                                )
+
+                                  /* =========================
+                                     PAID AMOUNT
+                                  ========================= */
+                                  : key === "paidAmount" ? (
+                                    <input
+                                      name="paidAmount"
+                                      value={formData.paidAmount}
+                                      onChange={handleChange}
+                                      placeholder="Paid Amount"
+                                      type="number"
+                                      min="0"
+                                      required={formData.paid === false}
+                                      disabled={formData.paid === true}
+                                    />
+                                  )
+
+                                    /* =========================
+                                       OTHER
+                                    ========================= */
+                                    : (
+                                      <input
+                                        name={key}
+                                        value={formData[key]}
+                                        onChange={handleChange}
+                                        placeholder={key.replace(
+                                          /([A-Z])/g,
+                                          " $1"
+                                        )}
+                                        type="text"
+                                      />
+                                    )}
 
                 </div>
               ))}

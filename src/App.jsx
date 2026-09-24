@@ -7,6 +7,7 @@ import Navbar from "./admin/Navbar";
 import ProtectedRoute from "./ProtectedRoute";
 import Policies from "./admin/Policies";
 import Renewals from "./admin/Renewals";
+import { InsuranceProvider } from "./admin/InsuranceContext";
 
 function AppShell() {
   const location = useLocation();
@@ -55,9 +56,11 @@ function AppShell() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppShell />
-    </BrowserRouter>
+    <InsuranceProvider>
+      <BrowserRouter>
+        <AppShell />
+      </BrowserRouter>
+    </InsuranceProvider>
   );
 }
 

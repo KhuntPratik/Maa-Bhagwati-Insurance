@@ -1,67 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import "./Dashboard.css";
+import { useInsuranceContext } from "./InsuranceContext";
 
 function Dashboard() {
-  const [data, setData] = useState([]);
-  const [totalPremium, setTotalPremium] = useState(0);
-  const [totalCommission, setTotalCommission] = useState(0);
-  const [monthlyProfit, setMonthlyProfit] = useState(0);
+  const { policies, loading } = useInsuranceContext();
 
-  const csvURL = import.meta.env.VITE_CSV_URL;
+  const stats = useMemo(() => {
+    let premiumSum = 0;
+    let commissionSum = 0;
+    let monthSum = 0;
 
-  useEffect(() => {
-    fetch(csvURL)
-      .then(res => res.text())
-      .then(text => {
-        const rows = text.split("\n").slice(1);
-        const parsed = rows.map(row => row.split(","));
+    const currentMonth = new Date().getMonth();
 
-        let premiumSum = 0;
-        let commissionSum = 0;
-        let monthSum = 0;
+    policies.forEach((policy) => {
+      const row = policy.data || [];
+      const date = new Date(row[0]);
+      const premium = Number(row[9]) || Number(row[10]) || 0;
+      const commission = Number(row[10]) || Number(row[11]) || 0;
 
-        const currentMonth = new Date().getMonth();
+      premiumSum += premium;
+      commissionSum += commission;
 
-        parsed.forEach(row => {
-          const date = new Date(row[0]);
-          const premium = Number(row[9]) || 0;
-          const commission = Number(row[10]) || 0;
+      if (!Number.isNaN(date.getTime()) && date.getMonth() === currentMonth) {
+        monthSum += commission;
+      }
+    });
 
-          premiumSum += premium;
-          commissionSum += commission;
-
-          if (date.getMonth() === currentMonth) {
-            monthSum += commission;
-          }
-        });
-
-        setTotalPremium(premiumSum);
-        setTotalCommission(commissionSum);
-        setMonthlyProfit(monthSum);
-        setData(parsed);
-      });
-  }, []);
+    return {
+      totalPremium: premiumSum,
+      totalCommission: commissionSum,
+      monthlyProfit: monthSum,
+    };
+  }, [policies]);
 
   return (
     <div className="dashboard-container">
       <h2>📊 Insurance Dashboard</h2>
 
-      <div className="stats-grid">
-        <div className="card-box">
-          <h3>Total Premium</h3>
-          <p>₹ {totalPremium}</p>
-        </div>
+      {loading ? (
+        <p>Loading dashboard data...</p>
+      ) : (
+        <div className="stats-grid">
+          <div className="card-box">
+            <h3>Total Premium</h3>
+            <p>₹ {stats.totalPremium}</p>
+          </div>
 
-        <div className="card-box">
-          <h3>Total Commission</h3>
-          <p>₹ {totalCommission}</p>
-        </div>
+          <div className="card-box">
+            <h3>Total Commission</h3>
+            <p>₹ {stats.totalCommission}</p>
+          </div>
 
-        <div className="card-box">
-          <h3>This Month Profit</h3>
-          <p>₹ {monthlyProfit}</p>
+          <div className="card-box">
+            <h3>This Month Profit</h3>
+            <p>₹ {stats.monthlyProfit}</p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

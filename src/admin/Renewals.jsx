@@ -1,6 +1,7 @@
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import "./Renewals.css";
+import { useInsuranceContext } from "./InsuranceContext";
 
 const columns = [
   { key: "timestamp", label: "Submitted" },
@@ -292,111 +293,55 @@ function getWhatsAppUrl(renewal) {
 }
 
 // =====================================================
-// PARSE RENEWALS
+// PARSE RENEWALS FROM CONTEXT ROWS
 // =====================================================
-function parseRenewals(text) {
-  const lines = text
-    .split(/\r?\n/)
-    .filter((line) => line.trim());
+function parseRenewalRow(policy) {
+  const row = policy?.data || [];
+  const headerKeys = (policy?.headerKeys || []).map((header) => header);
 
-  if (lines.length < 2) {
-    return [];
-  }
+  return columns.reduce(
+    (renewal, column, index) => {
+      const acceptedHeaders =
+        headerAliases[column.key] || [
+          toKey(column.label),
+        ];
 
-  const headers = parseCsvLine(lines[0]).map(toKey);
+      const headerIndex = headerKeys.findIndex(
+        (header) => acceptedHeaders.includes(header)
+      );
 
-  return lines.slice(1).map((line) => {
-    const values = parseCsvLine(line);
+      const fallbackIndex =
+        column.key === "timestamp" ? 0 : index;
 
-    return columns.reduce(
-      (renewal, column, index) => {
-        const acceptedHeaders =
-          headerAliases[column.key] || [
-            toKey(column.label),
-          ];
+      renewal[column.key] =
+        row[
+          headerIndex >= 0 ? headerIndex : fallbackIndex
+        ] || "-";
 
-        const headerIndex = headers.findIndex(
-          (header) =>
-            acceptedHeaders.includes(header)
-        );
-
-        const fallbackIndex =
-          column.key === "timestamp"
-            ? 0
-            : index;
-
-        renewal[column.key] =
-          values[
-            headerIndex >= 0
-              ? headerIndex
-              : fallbackIndex
-          ] || "-";
-
-        return renewal;
-      },
-      {}
-    );
-  });
+      return renewal;
+    },
+    {}
+  );
 }
 
 // =====================================================
 // RENEWALS COMPONENT
 // =====================================================
 function Renewals() {
-  const [renewals, setRenewals] = useState([]);
+  const { policies, loading } = useInsuranceContext();
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] =
     useState("all");
-  const [loading, setLoading] =
-    useState(true);
-  const [error, setError] = useState("");
 
-  const csvURL = import.meta.env.VITE_CSV_URL;
+  const renewals = useMemo(
+    () =>
+      policies
+        .map((policy) => parseRenewalRow(policy))
+        .filter((renewal) => Object.keys(renewal).length > 0),
+    [policies]
+  );
 
-  // ===================================================
-  // LOAD GOOGLE SHEET CSV
-  // ===================================================
-  useEffect(() => {
-    if (!csvURL) {
-      setLoading(false);
-      setError(
-        "Google Sheet CSV URL is missing."
-      );
-      return;
-    }
-
-    setLoading(true);
-    setError("");
-
-    fetch(csvURL)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            "Unable to load renewal records."
-          );
-        }
-
-        return response.text();
-      })
-      .then((text) => {
-        const data = parseRenewals(text);
-
-        setRenewals(data);
-      })
-      .catch((err) => {
-        console.error(
-          "Renewal loading error:",
-          err
-        );
-
-        setError(
-          "Renewal requests could not be loaded."
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [csvURL]);
+  const error = !loading && !policies.length ? "No renewal records available." : "";
 
   // ===================================================
   // SELECTED FILTER
@@ -520,13 +465,6 @@ function Renewals() {
         </p>
       )}
 
-      {/* ================= NO URL ================= */}
-      {!csvURL && (
-        <p className="renewals-message">
-          Set VITE_CSV_URL in your .env file.
-        </p>
-      )}
-
       {/* ================= LOADING ================= */}
       {loading && (
         <p className="renewals-message">
@@ -536,7 +474,6 @@ function Renewals() {
 
       {/* ================= TABLE ================= */}
       {!loading &&
-        csvURL &&
         !error && (
           <div className="table-responsive">
             <table className="renewals-table">

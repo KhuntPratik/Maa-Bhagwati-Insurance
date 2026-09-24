@@ -219,11 +219,7 @@ function QuoteSection({ quoteForm, quoteErrors, onChange, onSubmit, onWhatsApp }
                   placeholder="Tell us what you need help with"
                 />
 
-                {quoteErrors.message && (
-                  <span className="error-text">
-                    {quoteErrors.message}
-                  </span>
-                )}
+              
               </div>
             </div>
 
