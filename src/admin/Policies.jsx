@@ -64,8 +64,9 @@ function Policies() {
   };
 
   const handlePaymentReminder = (row) => {
-    const customerName = row[4] || "Customer";
-    const vehicleNo = row[2] || "";
+    const customerName = row[4] || "[Policy Holder Name]";
+    const vehicleNo = row[2] || "[Vehicle Number]";
+    const premium = row[10] || "[Amount]";
     const mobile = String(row[5] || "")
       .replace(/\D/g, "")
       .replace(/^91/, "");
@@ -75,9 +76,21 @@ function Policies() {
       return;
     }
 
-    const message = `નમસ્તે ${customerName} 🙏
+    const message = `નમસ્કાર, 🙏
 
-તમારા વાહન ${vehicleNo} ની Insurance પેઇમેન્ટ ગુડાલાલ માટે રિમાઇન્ડર છે. કૃપા કરીને પેમેન્ટ કરી દો. ✅
+🚗 વાહન નંબર: ${vehicleNo}
+
+👤 પોલિસી ધારકનું નામ: ${customerName}
+
+💰 બાકી પેમેન્ટ: ₹${premium}
+
+આપની Insurance Policy ઇશ્યૂ થઈ ગઈ છે. ✅
+
+કૃપા કરીને ઉપરોક્ત ₹${premium} નું પેમેન્ટ કરી આપશો.
+
+👉 પેમેન્ટ માટે નીચે આપેલ Scanner / UPI નો ઉપયોગ કરો.
+
+આભાર 🙏
 
 Maa Bhagwati Insurance`;
 
@@ -88,92 +101,6 @@ Maa Bhagwati Insurance`;
     window.open(whatsappUrl, "_blank");
     alert("Payment reminder WhatsApp opened ✅");
   };
-
-  // ==============================
-  // PAYMENT RECEIVED + WHATSAPP
-  // ==============================
-  const handlePaymentReceived = async (row, sheetRow) => {
-    const customerName = row[4] || "Customer";
-    const vehicleNo = row[2] || "";
-
-    const mobile = String(row[5] || "")
-      .replace(/\D/g, "")
-      .replace(/^91/, "");
-
-    if (!mobile) {
-      alert("Customer mobile number not found ❌");
-      return;
-    }
-
-    if (!scriptURL) {
-      alert("VITE_SCRIPT_URL is missing ❌");
-      return;
-    }
-
-    try {
-      setIsSaving(true);
-
-      // ==============================
-      // UPDATE GOOGLE SHEET AS PAID
-      // ==============================
-      const data = new URLSearchParams();
-
-      data.append("action", "updatePayment");
-      data.append("sheetRow", String(sheetRow));
-      data.append("paid", "true");
-
-      await fetch(scriptURL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type":
-            "application/x-www-form-urlencoded;charset=UTF-8",
-        },
-        body: data.toString(),
-      });
-
-      // ==============================
-      // PAYMENT RECEIVED MESSAGE
-      // ==============================
-      const message = `નમસ્તે ${customerName} 🙏
-
-તમારા વાહન ${vehicleNo} ના Insurance નું પેમેન્ટ સફળતાપૂર્વક પ્રાપ્ત થયું છે. ✅
-
-આભાર 🙏
-
-Maa Bhagwati Insurance`;
-
-      const whatsappUrl = `https://wa.me/91${mobile}?text=${encodeURIComponent(
-        message
-      )}`;
-
-      // Open WhatsApp
-      window.open(whatsappUrl, "_blank");
-
-      // ==============================
-      // UPDATE UI
-      // ==============================
-      alert("Payment marked as Paid & WhatsApp opened ✅");
-
-      // Refresh sheet data
-      setTimeout(() => {
-        fetchPolicies();
-      }, 1500);
-
-    } catch (error) {
-      console.error(
-        "Payment received error:",
-        error
-      );
-
-      alert(
-        "Payment update failed ❌"
-      );
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
 
   // ==============================
   // SAVE PAYMENT STATUS
@@ -346,22 +273,8 @@ Maa Bhagwati Insurance`;
                     )}
 
                     {/* WhatsApp + Reminder */}
-                    
-                    <div className="action-buttons">
 
-                      {/* PAYMENT RECEIVED */}
-                      {!isPaid && (
-                        <button
-                          type="button"
-                          className="whatsapp-btn"
-                          onClick={() =>
-                            handlePaymentReceived(row, sheetRow)
-                          }
-                          disabled={isSaving}
-                        >
-                          💰 Payment Received
-                        </button>
-                      )}
+                    <div className="action-buttons">
 
                       {/* PAYMENT REMINDER */}
                       {!isPaid && (
@@ -378,11 +291,7 @@ Maa Bhagwati Insurance`;
                       )}
 
                     </div>
-                  
-
-
                   </td>
-
                 </tr>
               );
             })}

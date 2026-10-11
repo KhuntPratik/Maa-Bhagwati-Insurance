@@ -1,0 +1,163 @@
+
+.upload-page {
+  min-height: 100vh;
+  padding: 32px 16px;
+  background: #f5f7fb;
+  color: #172033;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.upload-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.upload-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.upload-icon {
+  font-size: 40px;
+}
+
+.upload-header h1 {
+  margin: 12px 0 8px;
+  font-size: 28px;
+}
+
+.upload-header p,
+.review-note {
+  color: #687386;
+  line-height: 1.6;
+}
+
+.upload-card,
+.details-card {
+  background: white;
+  border: 1px solid #e3e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 5px 20px #1720330a;
+}
+
+.drop-zone {
+  min-height: 180px;
+  padding: 24px;
+  border: 2px dashed #c5cddd;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.drop-zone:hover {
+  border-color: #2563eb;
+  background: #f8faff;
+}
+
+.drop-zone input {
+  max-width: 100%;
+  margin-top: 8px;
+}
+
+.upload-symbol {
+  font-size: 34px;
+  color: #2563eb;
+}
+
+.drop-zone span:last-of-type {
+  color: #687386;
+  font-size: 13px;
+}
+
+.extract-button,
+.save-button {
+  width: 100%;
+  margin-top: 20px;
+  border: 0;
+  border-radius: 9px;
+  padding: 14px;
+  background: #1d4ed8;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.extract-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.save-button {
+  background: #15803d;
+}
+
+.error-message {
+  color: #dc2626;
+  margin-top: 12px;
+}
+
+.details-card h2 {
+  margin-top: 0;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.field input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #d5dce7;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 400;
+  outline-color: #2563eb;
+}
+
+.raw-text {
+  margin-top: 20px;
+}
+
+.raw-text pre {
+  overflow: auto;
+  max-height: 300px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-card,
+  .details-card {
+    padding: 16px;
+  }
+
+  .upload-header h1 {
+    font-size: 23px;
+  }
+}

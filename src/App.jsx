@@ -8,6 +8,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Policies from "./admin/Policies";
 import Renewals from "./admin/Renewals";
 import { InsuranceProvider } from "./admin/InsuranceContext";
+import UploadPolicy from "./admin//UploadPolicy";
 
 function AppShell() {
   const location = useLocation();
@@ -46,6 +47,15 @@ function AppShell() {
           element={
             <ProtectedRoute>
               <Renewals />
+            </ProtectedRoute>
+          }
+        />
+
+         <Route
+          path="/uploadpolicy"
+          element={
+            <ProtectedRoute>
+              <UploadPolicy />
             </ProtectedRoute>
           }
         />
