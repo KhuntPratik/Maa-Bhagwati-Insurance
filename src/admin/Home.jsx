@@ -124,8 +124,10 @@ function Home() {
   // =========================
   const handleVehicleNameChange = (e) => {
     const value = e.target.value
+      .replace(/\//g, " ")
       .toLowerCase()
       .split(" ")
+      .filter(Boolean)
       .map(
         (word) =>
           word.charAt(0).toUpperCase() + word.slice(1)
@@ -250,12 +252,13 @@ function Home() {
       // VEHICLE NAME
       // =========================
       let vehicleName = findValue(fullText, [
-        /Make\s*\/\s*Model\s*\/\s*Variant\s+(.+?)\s+CC\s*\/\s*KW/i,
-        /Make\s*\/\s*Model\s*\/\s*Variant\s+(.+?)\s+(?:Engine|Chassis|Registration)/i,
-        /Vehicle\s*(?:Make|Model)\s*[:\-]\s*(.+?)\s+(?:Engine|Chassis|Registration)/i,
+        /Make\s*\/\s*Model\s*\/\s*Variant\s+(.+?)\s+(?:CC\s*\/\s*KW|Engine|Chassis|Registration)/i,
+        /Vehicle\s*Make\s*[:\-]\s*(.+?)\s+(?:Engine|Chassis|Registration)/i,
       ]);
 
       vehicleName = vehicleName
+        .replace(/\//g, " ")
+        .replace(/\s+(?:CC|KW|Engine|Chassis|Registration|Policy|No\.?|Address)\b.*$/i, "")
         .replace(/\s+/g, " ")
         .trim();
 
@@ -273,6 +276,7 @@ function Home() {
         .replace(/^Mr\.?\s*/i, "")
         .replace(/^Mrs\.?\s*/i, "")
         .replace(/^Ms\.?\s*/i, "")
+        .replace(/\s+(?:Address|Policy|Mobile|Contact|Phone|Email|Vehicle|Engine|Chassis|Registration)\b.*$/i, "")
         .replace(/\s+/g, " ")
         .trim();
 
@@ -305,7 +309,7 @@ function Home() {
         company = "ICICI Lombard";
       } else if (/HDFC\s*ERGO/i.test(fullText)) {
         company = "HDFC ERGO";
-      } else if (/Bajaj\s*Allianz/i.test(fullText)) {
+      } else if (/Bajaj\s*/i.test(fullText)) {
         company = "Bajaj Allianz";
       } else if (/Go\s*Digit|Digit\s*Insurance/i.test(fullText)) {
         company = "Go Digit";
