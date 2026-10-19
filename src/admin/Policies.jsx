@@ -219,7 +219,7 @@ Maa Bhagwati Insurance`;
                   <td data-label="Action">
 
                     {editingRow === sheetRow ? (
-                      <div className="payment-edit-box">
+                      <div className=" t-edit-box">
 
                         <div className="payment-status-buttons">
 
@@ -289,7 +289,6 @@ Maa Bhagwati Insurance`;
                           🔔 Reminder
                         </button>
                       )}
-
                     </div>
                   </td>
                 </tr>

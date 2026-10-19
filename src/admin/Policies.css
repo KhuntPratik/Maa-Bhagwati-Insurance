@@ -124,10 +124,11 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 13px;
+  background: #000;
 }
 
 .reminder-btn {
-  background: #f5a623;
+  background: #000;
   color: #fff;
 }
 
@@ -164,6 +165,37 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  background: #000;
+}
+
+.payment-status-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.status-btn,
+.cancel-payment-btn {
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 5px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.status-btn:hover,
+.cancel-payment-btn:hover {
+  background: #333;
+}
+
+.status-btn:disabled,
+.cancel-payment-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 @media (max-width: 480px) {
