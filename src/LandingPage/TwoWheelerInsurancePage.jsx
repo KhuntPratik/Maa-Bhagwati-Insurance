@@ -53,16 +53,23 @@ function TwoWheelerInsurancePage() {
       <main>
         <section className="two-wheeler-hero">
           <div className="two-wheeler-container two-wheeler-hero-content">
-            <p className="eyebrow dark">Maa Bhagwati Insurance · Rajkot, Gujarat</p>
-            <h1>Two-Wheeler Insurance in Rajkot</h1>
-            <p className="two-wheeler-lead">
-              Get help understanding bike insurance options, cover details and renewal steps for your motorcycle or scooter.
-            </p>
-            <WhatsAppButton
-              className="whatsapp-button two-wheeler-hero-cta"
-              label="Enquire on WhatsApp"
-              message={whatsappMessage}
-            />
+            <div className="two-wheeler-hero-copy">
+              <p className="eyebrow dark">Two-wheeler insurance</p>
+              <h1>Two-Wheeler Insurance in Rajkot</h1>
+              <p className="two-wheeler-lead">
+                Get help understanding bike insurance options, cover details and renewal steps for your motorcycle or scooter.
+              </p>
+              <WhatsAppButton
+                className="whatsapp-button two-wheeler-hero-cta"
+                label="Enquire on WhatsApp"
+                message={whatsappMessage}
+              />
+            </div>
+            <div className="two-wheeler-hero-visual" aria-label="Maa Bhagwati Insurance, Rajkot, Gujarat">
+              <span className="two-wheeler-visual-label">Insurance guidance for your ride</span>
+              <img src="/logo nav.png" alt="Maa Bhagwati Insurance" />
+              <span className="two-wheeler-visual-location">Rajkot, Gujarat</span>
+            </div>
           </div>
         </section>
 
