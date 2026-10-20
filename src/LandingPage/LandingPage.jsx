@@ -53,7 +53,7 @@ function LandingPage() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    document.title = `${siteConfig.businessName} | ${siteConfig.tagline}`;
+    document.title = "Vehicle Insurance in Rajkot, Gujarat | Maa Bhagwati Insurance";
     document.querySelector('meta[name="description"]')?.setAttribute("content", `Trusted vehicle insurance support in ${siteConfig.location}. Two wheeler, four wheeler, commercial vehicle, renewal and claim assistance.`);
   }, []);
 
