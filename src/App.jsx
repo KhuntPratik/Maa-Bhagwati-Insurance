@@ -9,6 +9,7 @@ import Policies from "./admin/Policies";
 import Renewals from "./admin/Renewals";
 import { InsuranceProvider } from "./admin/InsuranceContext";
 import UploadPolicy from "./admin//UploadPolicy";
+import TwoWheelerInsurancePage from "./LandingPage/TwoWheelerInsurancePage";
 
 function AppShell() {
   const location = useLocation();
@@ -21,6 +22,7 @@ function AppShell() {
       {isAdminArea && <Navbar />}
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/two-wheeler-insurance-rajkot" element={<TwoWheelerInsurancePage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/admin" element={<AdminLogin />} />
 

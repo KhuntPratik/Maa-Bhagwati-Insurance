@@ -1,9 +1,13 @@
 import { buildWhatsAppLink, siteConfig } from "../config/site";
 
-function WhatsAppButton({ className = "whatsapp-float", label = "WhatsApp" }) {
+function WhatsAppButton({
+  className = "whatsapp-float",
+  label = "WhatsApp",
+  message = siteConfig.whatsappMessage,
+}) {
   return (
     <a
-      href={buildWhatsAppLink(siteConfig.whatsappMessage)}
+      href={buildWhatsAppLink(message)}
       target="_blank"
       rel="noopener noreferrer"
       className={className}

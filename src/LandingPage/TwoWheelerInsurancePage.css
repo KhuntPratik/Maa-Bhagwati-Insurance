@@ -1,0 +1,169 @@
+.two-wheeler-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.two-wheeler-container {
+  width: min(1120px, calc(100% - 48px));
+  margin-inline: auto;
+}
+
+.two-wheeler-hero {
+  padding: clamp(64px, 10vw, 112px) 0;
+  background: linear-gradient(120deg, #171717, #353026);
+  color: #fff;
+}
+
+.two-wheeler-hero-content {
+  max-width: 900px;
+}
+
+.two-wheeler-hero .eyebrow {
+  color: var(--gold);
+}
+
+.two-wheeler-hero h1 {
+  max-width: 850px;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+}
+
+.two-wheeler-lead {
+  max-width: 700px;
+  margin: 22px 0 28px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.75;
+}
+
+.two-wheeler-hero-cta,
+.two-wheeler-contact-cta {
+  width: auto;
+  min-height: 48px;
+  gap: 9px;
+  text-decoration: none;
+}
+
+.two-wheeler-content {
+  display: grid;
+  gap: 62px;
+  padding-block: 74px 90px;
+}
+
+.two-wheeler-content h2 {
+  margin: 0 0 18px;
+  color: var(--black);
+  font-size: clamp(1.7rem, 3vw, 2.45rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.18;
+}
+
+.two-wheeler-content h3 {
+  margin: 0 0 12px;
+  color: var(--black);
+  font-size: 1.18rem;
+  font-weight: 700;
+}
+
+.two-wheeler-content p,
+.two-wheeler-content li {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.two-wheeler-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.two-wheeler-card,
+.two-wheeler-faq {
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.two-wheeler-card p,
+.two-wheeler-faq p {
+  margin: 0;
+}
+
+.two-wheeler-content .two-wheeler-note {
+  margin: 18px 0 0;
+  font-size: 0.9rem;
+}
+
+.two-wheeler-inline-link,
+.two-wheeler-home-link a {
+  color: #8a6428;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.two-wheeler-steps,
+.two-wheeler-document-list {
+  display: grid;
+  gap: 12px;
+  padding-left: 1.35rem;
+}
+
+.two-wheeler-faq-list {
+  display: grid;
+  gap: 16px;
+}
+
+.two-wheeler-contact {
+  padding: clamp(28px, 6vw, 56px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #f1eee7;
+}
+
+.two-wheeler-contact > p {
+  max-width: 760px;
+}
+
+.two-wheeler-home-link {
+  margin: 24px 0 0;
+}
+
+@media (max-width: 700px) {
+  .two-wheeler-container {
+    width: min(100% - 36px, 1120px);
+  }
+
+  .two-wheeler-content {
+    gap: 48px;
+    padding-block: 54px 68px;
+  }
+
+  .two-wheeler-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .two-wheeler-card,
+  .two-wheeler-faq {
+    padding: 22px;
+  }
+
+  .two-wheeler-hero-cta,
+  .two-wheeler-contact-cta {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .two-wheeler-page {
+    scroll-behavior: auto;
+  }
+}

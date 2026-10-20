@@ -1,8 +1,10 @@
-import { Link, Links } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { buildWhatsAppLink } from "../config/site";
 import "./Footer.css";
 
 function Footer({ siteConfig }) {
+  const { pathname } = useLocation();
+  const homePrefix = pathname === "/" ? "" : "/";
   return (
     <footer className="site-footer">
       <div className="footer-layout">
@@ -32,31 +34,31 @@ function Footer({ siteConfig }) {
 
           <ul>
             <li>
-              <a href="#top">Home</a>
+              <a href={`${homePrefix}#top`}>Home</a>
             </li>
 
             <li>
-              <a href="#about">About</a>
+              <a href={`${homePrefix}#about`}>About</a>
             </li>
 
             <li>
-              <a href="#services">Services</a>
+              <a href={`${homePrefix}#services`}>Services</a>
             </li>
 
             <li>
-              <a href="#renew-insurance">
+              <a href={`${homePrefix}#renew-insurance`}>
                 Renew Insurance
               </a>
             </li>
 
             <li>
-              <a href="#claim-assistance">
+              <a href={`${homePrefix}#claim-assistance`}>
                 Claim Assistance
               </a>
             </li>
 
             <li>
-              <a href="#contact">Contact</a>
+              <a href={`${homePrefix}#contact`}>Contact</a>
             </li>
           </ul>
         </div>

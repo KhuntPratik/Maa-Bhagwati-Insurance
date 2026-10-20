@@ -1,5 +1,6 @@
 
 import "./InsuranceSection.css";
+import { Link } from "react-router-dom";
 
 function InsuranceSection({ services, onQuote }) {
     return (
@@ -31,6 +32,12 @@ function InsuranceSection({ services, onQuote }) {
                         <h3>{service.title}</h3>
 
                         <p>{service.description}</p>
+
+                        {service.title === "Two Wheeler Insurance" && (
+                            <Link className="text-button" to="/two-wheeler-insurance-rajkot">
+                                Two-wheeler insurance in Rajkot details →
+                            </Link>
+                        )}
 
                         <button
                             type="button"

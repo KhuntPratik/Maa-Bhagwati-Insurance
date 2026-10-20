@@ -13,6 +13,7 @@ import ClaimSection from "./ClaimSection";
 import AboutSection from "./AboutSection";
 import ContactSection from "./ContactSection";
 import Footer from "./Footer";
+import { setPageMetadata } from "../utils/pageMetadata";
 
 const services = [
   { icon: "🏍️", title: "Two Wheeler Insurance", description: "Affordable protection plans for scooters and bikes, designed for daily commuting and peace of mind." },
@@ -53,8 +54,12 @@ function LandingPage() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    document.title = "Vehicle Insurance in Rajkot, Gujarat | Maa Bhagwati Insurance";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", `Trusted vehicle insurance support in ${siteConfig.location}. Two wheeler, four wheeler, commercial vehicle, renewal and claim assistance.`);
+    setPageMetadata({
+      title: "Vehicle Insurance in Rajkot, Gujarat | Maa Bhagwati Insurance",
+      description: "Maa Bhagwati Insurance offers trusted vehicle insurance support in Rajkot, Gujarat including two wheeler, four wheeler, commercial vehicle, renewal and claim assistance.",
+      canonical: "https://maa-bhagwati-insurance.vercel.app/",
+      ogTitle: "Maa Bhagwati Insurance | Your Protection, Our Commitment",
+    });
   }, []);
 
   useEffect(() => {

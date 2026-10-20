@@ -1,9 +1,12 @@
 
 import { useState } from "react";
 import { buildWhatsAppLink } from "../config/site";
+import { useLocation } from "react-router-dom";
 import "./Header.css";
 
 function Header({ isScrolled, siteConfig }) {
+  const { pathname } = useLocation();
+  const homePrefix = pathname === "/" ? "" : "/";
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navLinks = [
@@ -24,7 +27,7 @@ function Header({ isScrolled, siteConfig }) {
       <div className="container nav-container">
         {/* Brand */}
         <a
-          href="#top"
+          href={`${homePrefix}#top`}
           className="brand"
           aria-label="Maa Bhagwati Insurance home"
           onClick={closeMenu}
@@ -47,7 +50,7 @@ function Header({ isScrolled, siteConfig }) {
         {/* Desktop Navigation */}
         <nav className="main-nav" aria-label="Main navigation">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href}>
+            <a key={link.href} href={`${homePrefix}${link.href}`}>
               {link.label}
             </a>
           ))}
@@ -94,7 +97,7 @@ function Header({ isScrolled, siteConfig }) {
         {navLinks.map((link) => (
           <a
             key={link.href}
-            href={link.href}
+            href={`${homePrefix}${link.href}`}
             onClick={closeMenu}
           >
             {link.label}
